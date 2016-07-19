@@ -1,0 +1,12 @@
+﻿빌드 시작: 2016-07-18 오후 8:18:51
+     1>2 노드의 "C:\Users\Jay\Desktop\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\rc.exe /D _DEBUG /l"0x0412" /IDebug\ /nologo /fo"Debug\MecaLicManager.res" MecaLicManager.rc 
+         
+     1>MecaLicManager.rc(247): error RC2135: file not found: res\Meca Lic Manager.ico
+         
+     1>"C:\Users\Jay\Desktop\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트를 빌드했습니다(Build 대상). - 실패
+
+빌드하지 못했습니다.
+
+경과 시간: 00:00:00.27
