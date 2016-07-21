@@ -205,6 +205,7 @@ BEGIN_MESSAGE_MAP(CMecaLicManagerDlg, CDialogEx)
 	ON_EN_UPDATE(IDC_EDIT_MAC4, &CMecaLicManagerDlg::OnUpdateMac4)
 	ON_EN_UPDATE(IDC_EDIT_MAC5, &CMecaLicManagerDlg::OnUpdateMac5)
 	ON_EN_UPDATE(IDC_EDIT_MAC6, &CMecaLicManagerDlg::OnUpdateMac6)
+	ON_BN_CLICKED(IDC_BUTT_CONFIG, &CMecaLicManagerDlg::OnButtConfig)
 END_MESSAGE_MAP()
 
 
@@ -861,4 +862,13 @@ void CMecaLicManagerDlg::macAddControl(int boxNum)
 
 	(*macAddCtrl[boxNum]).SetSel(0, -1);
 	(*macAddCtrl[boxNum]).SetSel(-1, -1);
+}
+
+void CMecaLicManagerDlg::OnButtConfig()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	m_pConfigDlg = new CConfigDlg();
+	m_pConfigDlg->Create(IDD_CONFIG, this);
+	m_pConfigDlg->ShowWindow(SW_SHOW);
 }

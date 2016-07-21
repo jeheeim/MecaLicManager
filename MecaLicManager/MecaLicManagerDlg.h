@@ -6,6 +6,7 @@
 #include "afxmenubutton.h"
 #include "afxwin.h"
 #include "ATLComTime.h"
+#include "ConfigDlg.h"
 
 // CMecaLicManagerDlg 대화 상자
 class CMecaLicManagerDlg : public CDialogEx
@@ -20,6 +21,7 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
 
+	CConfigDlg * m_pConfigDlg;
 
 // 구현입니다.
 protected:
@@ -58,11 +60,7 @@ public:
 	afx_msg void OnUpdateMac4();
 	afx_msg void OnUpdateMac5();
 	afx_msg void OnUpdateMac6();
-
-private:
-	CComboBox m_cApptype;
-	CComboBox m_cVersion;
-	CString m_strCbxApptype;
+	afx_msg void OnButtConfig();
 
 	CString baseAddress;
 	CString apptypeAddress;
@@ -70,6 +68,11 @@ private:
 	CString userDataAddress;
 	CString appVerAddresss;
 	CString allDataAddress;
+
+private:
+	CComboBox m_cApptype;
+	CComboBox m_cVersion;
+	CString m_strCbxApptype;
 
 	CString compCode;
 	CString compRemarks;

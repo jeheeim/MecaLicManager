@@ -1,12 +1,17 @@
-﻿빌드 시작: 2016-07-18 오후 8:18:51
-     1>2 노드의 "C:\Users\Jay\Desktop\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트(Build 대상)입니다.
-     1>ResourceCompile:
-         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\rc.exe /D _DEBUG /l"0x0412" /IDebug\ /nologo /fo"Debug\MecaLicManager.res" MecaLicManager.rc 
-         
-     1>MecaLicManager.rc(247): error RC2135: file not found: res\Meca Lic Manager.ico
-         
-     1>"C:\Users\Jay\Desktop\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트를 빌드했습니다(Build 대상). - 실패
+﻿빌드 시작: 2016-07-21 오전 11:21:55
+     1>2 노드의 "C:\Users\jay\Documents\GitHub\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트(Rebuild 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\MecaLicManager.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\MecaLicManager.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ConfigDlg.cpp MecaLicManager.cpp MecaLicManagerDlg.cpp
+         MecaLicManagerDlg.cpp
+         MecaLicManager.cpp
+         ConfigDlg.cpp
+     1>c:\users\jay\documents\github\mecalicmanager\mecalicmanager\mecalicmanagerdlg.h(24): error C2143: 구문 오류 : ';'이(가) '*' 앞에 없습니다.
+     1>c:\users\jay\documents\github\mecalicmanager\mecalicmanager\mecalicmanagerdlg.h(24): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
+         코드를 생성하고 있습니다...
+     1>"C:\Users\jay\Documents\GitHub\MecaLicManager\MecaLicManager\MecaLicManager.vcxproj" 프로젝트를 빌드했습니다(Rebuild 대상). - 실패
 
 빌드하지 못했습니다.
 
-경과 시간: 00:00:00.27
+경과 시간: 00:00:04.76

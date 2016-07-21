@@ -99,6 +99,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfigDlg.h" />
     <ClInclude Include="MecaLicManager.h" />
     <ClInclude Include="MecaLicManagerDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfigDlg.cpp" />
     <ClCompile Include="MecaLicManager.cpp" />
     <ClCompile Include="MecaLicManagerDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
