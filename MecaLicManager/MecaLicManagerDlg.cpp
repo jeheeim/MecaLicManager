@@ -18,38 +18,40 @@ onInitDialog() 함수부터 건드리면됨.
 그 밑에 여기서 부터 작업중인 메소드 라는 주석부터.
 
 메소드 목록
-OnButtExit()		: 프로그램 종료
 
-OnButtLicMake()		: 라이센스발급 버튼
-OnButtLicRead()		: 라이센스읽기 버튼
-
+method01.cpp
 OnButtReadAll()		: 전체정보읽기 버튼 reading 함수 호출
 OnButtReadComp()	: 회사정보읽기 버튼 reading 함수 호출
 OnButtReadUser()	: 사용자정보읽기 버튼 reading 함수 호출
 
 OnButtAllSaveAs()	: 전체 Save As 버튼. 저장 대화상자를 열기위해 openOrSaveDlg() 함수와
-						실제 저장을 수행하는 saving() 함수를 호출한다.
+						실제 저장을 수행하는 saving() 함수를 호출한다
 OnButtCompSaveAs()	: 회사 정보 save as 버튼
 onButtUserSaveAs()	: 사용자 정보 save as 버튼
 
 OnButtAllSave()		: 전체 save 버튼. 입력된 것이 있을때 새로 저장할지 기존에 저장한 곳에 저장할지 물어본다.
-openOrSaveDlg() 함수와 saving() 함수를 호출한다.
+						openOrSaveDlg() 함수와 saving() 함수를 호출한다.
 OnButtCompSave()	: 회사 save 버튼
 OnButtUserSave()	: 사용자 save 버튼
 
 openOrSaveDlg()		: 열기/저장 대화상자를 여는 메소드
 
-OnCbxApptype()		: apptype 콤보박스에서 선택했을때 수행. addAppversion() 함수 호출
-addAppversion()		: apptype 콤보박스에서 선택된 내용으로 appversion 파일을 읽어들인다.
-
-printMacAdd()		: mac address 를 대화상자에 출력
-getMacAdd()			: edit control에 각각 떨어져있는 mac address 를 CString 으로 출력
-
-
 saving()			: 실제 저장을 수행하는 함수. saveType, 데이터가 저장된 배열, 파일 경로를 입력받는다.
 						saveType 은 0일때 전체정보, 1일때 회사 정보, 2일때 사용자 정보를 저장한다.
 reading()			: 실제 읽기를 수행하는 함수. readType, 파일 경로를 입력받는다.
 						readType은 0일때 전체정보, 1일때 회사 정보, 2일때 사용자 정보를 저장한다.
+
+method02.cpp
+OnButtExit()		: 프로그램 종료
+
+OnButtLicMake()		: 라이센스발급 버튼
+OnButtLicRead()		: 라이센스읽기 버튼
+
+OnCbxApptype()		: apptype 콤보박스에서 선택했을때 수행. addAppversion() 함수 호출
+addAppversion()		: apptype 콤보박스에서 선택된 내용으로 appversion 파일을 읽어들인다. 자동으로 첫번째 데이터를 선택한다.
+
+printMacAdd()		: mac address 를 대화상자에 출력
+getMacAdd()			: edit control에 각각 떨어져있는 mac address 를 CString 으로 출력
 
 OnUpdateMac1~6		: mac address 입력칸이 변경되면 실행. macAddControl()을 실행한다.
 macAddControl()		: 정수 boxNum을 입력받아 16진수만(영문은 대문자) 출력한다.
@@ -126,6 +128,7 @@ CMecaLicManagerDlg::CMecaLicManagerDlg(CWnd* pParent /*=NULL*/)
 	userEndDate = _T("");
 	userMacAdd = _T("");
 	allDataAddress = _T("");
+	licAddress = _T("");
 }
 
 void CMecaLicManagerDlg::DoDataExchange(CDataExchange* pDX)
@@ -205,7 +208,7 @@ BEGIN_MESSAGE_MAP(CMecaLicManagerDlg, CDialogEx)
 	ON_EN_UPDATE(IDC_EDIT_MAC4, &CMecaLicManagerDlg::OnUpdateMac4)
 	ON_EN_UPDATE(IDC_EDIT_MAC5, &CMecaLicManagerDlg::OnUpdateMac5)
 	ON_EN_UPDATE(IDC_EDIT_MAC6, &CMecaLicManagerDlg::OnUpdateMac6)
-	ON_BN_CLICKED(IDC_BUTT_CONFIG, &CMecaLicManagerDlg::OnButtConfig)
+
 END_MESSAGE_MAP()
 
 
@@ -245,17 +248,21 @@ BOOL CMecaLicManagerDlg::OnInitDialog()
 	// 주소의 공통부분인 배열 baseAddress 설정,
 	// apptype.txt, appversion.txt가 위치한 폴더,
 	// 회사 정보파일 폴더, 사용자 정보파일 폴더
-	char badd[512];
-	memset(badd, 0, 512);
-	SHGetSpecialFolderPath(NULL, badd, CSIDL_PERSONAL, FALSE);
 	
-	baseAddress.Format("%s",badd);
-	baseAddress += "\\LicenseManagerData\\data\\";
-	apptypeAddress = baseAddress + (CString)"application\\apptype.txt";
-	appVerAddresss = baseAddress + (CString)"application\\version\\";
-	compDataAddress = baseAddress + (CString)"license\\comp";
-	userDataAddress = baseAddress + (CString)"license\\user";
-	allDataAddress = baseAddress + (CString)"license\\comp.user";
+	CStdioFile savePath;
+	CFileException ex;
+
+	// 저장된 폴더 위치.
+	savePath.Open("C:\\Users\\Jay\\Desktop\\MecaLicManager\\savePath.txt", CFile::modeRead, &ex);
+	savePath.ReadString(baseAddress);
+	savePath.Close();
+
+	apptypeAddress = baseAddress + (CString)"\\application\\apptype.txt";
+	appVerAddresss = baseAddress + (CString)"\\application\\version\\";
+	compDataAddress = baseAddress + (CString)"\\license\\comp";
+	userDataAddress = baseAddress + (CString)"\\license\\user";
+	allDataAddress = baseAddress + (CString)"\\license\\comp.user";
+	licAddress = baseAddress + (CString)"\\license\\licensefile";
 
 	// app type 콤보박스를 위해 apptype.txt파일 읽고 첫번째 항목 선택하기
 	CStdioFile src_file;
@@ -275,8 +282,6 @@ BOOL CMecaLicManagerDlg::OnInitDialog()
 
 	// 선택된 apptype 항목에 맞는 appversion 파일을 읽고 첫번째 항목 선택하기
 	addAppversion();
-
-	m_cVersion.SetCurSel(0);
 
 	// *data[]와 edit 박스 연결
 	data[0] = &compName;
@@ -374,29 +379,6 @@ HCURSOR CMecaLicManagerDlg::OnQueryDragIcon()
 
 */
 
-// 프로그램 종료 버튼
-void CMecaLicManagerDlg::OnButtExit()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	OnOK();
-}
-
-void CMecaLicManagerDlg::OnButtLicMake()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	MessageBox("라이센스를 발급합니다.", "발급", NULL);
-}
-
-
-void CMecaLicManagerDlg::OnButtLicRead()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	MessageBox("라이센스를 불러옵니다.", "읽기", NULL);
-}
-
 // read
 
 // 전체 정보 읽기 버튼.
@@ -423,8 +405,6 @@ void CMecaLicManagerDlg::OnButtReadUser()
 
 void CMecaLicManagerDlg::OnButtAllSaveAs()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	CString allDataPath;
 	CString writeStr[15];
 
@@ -629,64 +609,6 @@ CString CMecaLicManagerDlg::openOrSaveDlg(BOOL isOpen, CString address)
 }
 
 
-// 어플리케이션 종류를 선택하면 실행되는 함수
-// 매번 앱 버젼을 초기화하고 선택한 어플리케이션의 버전 목록파일을 읽어들여
-// 버전을 선택할 수 있는 콤보박스에 저장한다.
-void CMecaLicManagerDlg::OnCbxApptype()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_cVersion.ResetContent();
-	
-	addAppversion();
-}
-
-void CMecaLicManagerDlg::addAppversion()
-{
-	CStdioFile src_file;
-	CString str;
-
-	UpdateData(TRUE);
-
-	// 선택된 apptype 항목에 맞는 appversion 파일을 읽고 첫번째 항목 선택하기
-	CString fileAddress = appVerAddresss + m_strCbxApptype + ".txt";
-
-	src_file.Open(fileAddress, CFile::modeRead);
-
-	while (src_file.ReadString(str))
-	{
-		m_cVersion.AddString(str);
-	}
-
-	src_file.Close();
-
-}
-
-
-void CMecaLicManagerDlg::printMacAdd(CString macAddress)
-{
-	macAdd1 = macAddress.Left(2);
-	macAdd2 = macAddress.Mid(3, 2);
-	macAdd3 = macAddress.Mid(6, 2);
-	macAdd4 = macAddress.Mid(9, 2);
-	macAdd5 = macAddress.Mid(12, 2);
-	macAdd6 = macAddress.Mid(15, 2);
-
-	UpdateData(FALSE);
-}
-
-
-CString CMecaLicManagerDlg::getMacAdd(void)
-{
-	CString result;
-
-	UpdateData(TRUE);
-
-	result = macAdd1 + "-" + macAdd2 + "-" + macAdd3 + "-" + macAdd4 + "-" + macAdd5 + "-" + macAdd6;
-
-	return result;
-}
-
-
 // 전체 / 회사 / 사용자 정보에 데이터를 입력한다.
 // 0이면 전체 저장, 1이면 회사정보 저장, 2이면 사용자 저장
 void CMecaLicManagerDlg::saving(int saveType, CString * writeStr, CString dataPath)
@@ -798,6 +720,157 @@ void CMecaLicManagerDlg::reading(int readType, CString dataPath)
 	MessageBox(alert + " 파일 읽기를 성공했습니다.", "알림", NULL);
 }
 
+
+//util.cpp
+
+// 프로그램 종료 버튼
+void CMecaLicManagerDlg::OnButtExit()
+{
+	OnOK();
+}
+
+void CMecaLicManagerDlg::OnButtLicMake()
+{
+	CString licPath;
+	CString writeStr[15];
+	
+	// 일단은 txt파일로 저장한다.
+	CFileDialog dlgFileOpen(FALSE,  "TXT", NULL, OFN_FILEMUSTEXIST, "메모장(*.txt)|*.txt|모든파일(*.*)|*.*||", NULL);
+
+	dlgFileOpen.m_ofn.lpstrInitialDir = licAddress;
+
+	if(dlgFileOpen.DoModal() == IDCANCEL)
+	{
+		MessageBox("발급을 취소합니다.", "취소", NULL);
+
+		return;
+	}
+
+	licPath = dlgFileOpen.GetPathName();
+
+	CFileException ex;
+	CStdioFile licFile;
+
+	UpdateData(TRUE);
+
+	userMacAdd = getMacAdd();
+	userEndDate = userEnd.Format(_T("%Y/%m/%d"));
+
+	for(int i=0;i<15;i++)
+	{
+		writeStr[i] = (*data[i]) + "\n";
+	}
+
+	licFile.Open(licPath, CFile::modeCreate | CFile::modeReadWrite, &ex);
+
+	for (int i = 0; i < 15; i++)
+	{
+		licFile.WriteString(writeStr[i]);
+	}
+
+	licFile.Close();
+
+	MessageBox("라이센스 발급에 성공했습니다!", "성공", NULL);
+}
+
+
+void CMecaLicManagerDlg::OnButtLicRead()
+{
+	CString licPath;
+	CStdioFile licFile;
+	CFileDialog dlgFileOpen(TRUE, "TXT", NULL, OFN_FILEMUSTEXIST, "메모장(*.txt)|*.txt|모든파일(*.*)|*.*||", NULL);
+
+	// 유저폴더.
+	dlgFileOpen.m_ofn.lpstrInitialDir = licAddress;
+
+	if (dlgFileOpen.DoModal() == IDCANCEL)
+	{
+		MessageBox("라이센스 파일 읽기를 취소했습니다", "취소", NULL);
+
+		return;
+	}
+
+	licPath = dlgFileOpen.GetPathName();
+
+	licFile.Open(licPath, CFile::modeRead);
+
+	for(int i=0; i<15;i++)
+	{
+		licFile.ReadString(*data[i]);
+	}
+	
+	licFile.Close();
+
+	UpdateData(FALSE);
+
+	for (int i = 0; i < 15; i++)
+	{
+		originalData[i] = *data[i];
+	}
+
+	MessageBox("라이센스 파일 읽기를 성공했습니다.", "성공", NULL);
+}
+
+// 어플리케이션 종류를 선택하면 실행되는 함수
+// 매번 앱 버젼을 초기화하고 선택한 어플리케이션의 버전 목록파일을 읽어들여
+// 버전을 선택할 수 있는 콤보박스에 저장한다.
+void CMecaLicManagerDlg::OnCbxApptype()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_cVersion.ResetContent();
+	
+	addAppversion();
+}
+
+void CMecaLicManagerDlg::addAppversion()
+{
+	CStdioFile src_file;
+	CString str;
+
+	UpdateData(TRUE);
+
+	// 선택된 apptype 항목에 맞는 appversion 파일을 읽고 첫번째 항목 선택하기
+	CString fileAddress = appVerAddresss + m_strCbxApptype + ".txt";
+
+	src_file.Open(fileAddress, CFile::modeRead);
+
+	while (src_file.ReadString(str))
+	{
+		m_cVersion.AddString(str);
+	}
+
+	src_file.Close();
+
+	m_cVersion.SetCurSel(0);
+}
+
+
+void CMecaLicManagerDlg::printMacAdd(CString macAddress)
+{
+	macAdd1 = macAddress.Left(2);
+	macAdd2 = macAddress.Mid(3, 2);
+	macAdd3 = macAddress.Mid(6, 2);
+	macAdd4 = macAddress.Mid(9, 2);
+	macAdd5 = macAddress.Mid(12, 2);
+	macAdd6 = macAddress.Mid(15, 2);
+
+	UpdateData(FALSE);
+}
+
+
+CString CMecaLicManagerDlg::getMacAdd(void)
+{
+	CString result;
+
+	UpdateData(TRUE);
+
+	result = macAdd1 + "-" + macAdd2 + "-" + macAdd3 + "-" + macAdd4 + "-" + macAdd5 + "-" + macAdd6;
+
+	return result;
+}
+
+
+
 void CMecaLicManagerDlg::OnUpdateMac1()
 {
 	macAddControl(0);
@@ -862,13 +935,4 @@ void CMecaLicManagerDlg::macAddControl(int boxNum)
 
 	(*macAddCtrl[boxNum]).SetSel(0, -1);
 	(*macAddCtrl[boxNum]).SetSel(-1, -1);
-}
-
-void CMecaLicManagerDlg::OnButtConfig()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	m_pConfigDlg = new CConfigDlg();
-	m_pConfigDlg->Create(IDD_CONFIG, this);
-	m_pConfigDlg->ShowWindow(SW_SHOW);
 }
